@@ -5,20 +5,26 @@ import {
     Image,
     Dimensions,
   } from 'react-native';
-  import { Images, Themes } from "../../assets/Themes";
+import { Images, Themes } from "../../assets/Themes";
+import { Ionicons } from '@expo/vector-icons';
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   const trackHeight = windowHeight * 0.08;
   const trackWidth = windowWidth;
 
 
-  export default function Item({ id, index, title, artist, album, duration, imageUrl }) {
+  export default function Item({ id, index, title, artist, album, duration, imageUrl, previewUrl, externalUrl, navigation }) {
     return (
+    <Pressable onPress={(e) => {navigation.navigate('ScreenOne', {url: externalUrl})}}>
       <View style={styles.item}>
           <View style={styles.index}>
-              <Text style={styles.index_text}>
-                {index}
-              </Text>
+            <Pressable onPress={(e) => {e.stopPropagation(); navigation.navigate('ScreenTwo', {url: previewUrl})}}>
+            <Ionicons name="play-circle" size={28} color={Themes.colors.spotify}/>
+            </Pressable>
           </View>
           <View style={styles.trackImgBox}>
               <Image 
@@ -44,6 +50,7 @@ import {
               </Text>
           </View>
       </View>
+      </Pressable>
     );
   }
   
@@ -57,7 +64,7 @@ import {
         padding: 4,
     },
     index: {
-        width: trackWidth * 0.125,
+        width: trackWidth * 0.120,
         height: trackHeight,
         justifyContent: 'center',
         alignContent: 'center',
@@ -68,7 +75,7 @@ import {
         color: Themes.colors.gray,
     },
     trackImgBox: {
-        width: trackWidth * 0.20,
+        width: trackWidth * 0.205,
         height: trackHeight,
         justifyContent: 'flex-start',
       },

@@ -2,18 +2,21 @@ import { Pressable, TextStyle, StyleSheet, SafeAreaView, Text, View, Dimensions,
 import { useSpotifyAuth } from "./utils";
 import { Images, Themes } from "./assets/Themes";
 import Constants from 'expo-constants';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { blobbuilder } from "caniuse-lite/data/features";
 import inputEmailTelUrl from "caniuse-lite/data/features/input-email-tel-url";
 import Item from "./app/components/Song"
 import { millisToMinutesAndSeconds } from "./utils";
+import { Ionicons } from '@expo/vector-icons';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+let tracksI = null;
+import ScreenOne from './app/components/ScreenOne';
+import ScreenTwo from './app/components/ScreenTwo';
 
-
-
-export default function App() {
-  // Pass in true to useSpotifyAuth to use the album ID (in env.js) instead of top tracks
-  const { token, tracks, getSpotifyAuth } = useSpotifyAuth(true);
+const HomeScreen = ({ navigation }) => {
+  const { token, tracks, getSpotifyAuth } = useSpotifyAuth();
   let contentDisplayed = null;
   const renderTrackItem = ({ item, index }) => (
     <Item
@@ -24,11 +27,11 @@ export default function App() {
       album = {item.album.name}
       duration = {millisToMinutesAndSeconds(item.duration_ms)}
       imageUrl = {item.album.images[2].url}
-      ></Item>
+      previewUrl = {item.preview_url}
+      externalUrl = {item.external_urls.spotify}
+      navigation = {navigation}
+    ></Item>
   );
-
-
-
   if (token) {
     contentDisplayed = 
     <View style={styles.tracksPage}>
@@ -58,17 +61,37 @@ export default function App() {
       <Text style={styles.welcomeText}> CONNECT WITH SPOTIFY </Text>
     </View>
     </Pressable>
-}
-
+  }
   return (
-  <SafeAreaView style={styles.container}>
+  <SafeAreaView style={styles.homeScreen}>
     {contentDisplayed}
   </SafeAreaView>
+  ); 
+}
+
+const Stack = createStackNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        {/*<Stack.Screen name="ScreenOne" component={ScreenOne} />
+        <Stack.Screen name="ScreenTwo" component={ScreenTwo} />*/}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: Themes.colors.background,
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    paddingTop: Constants.statusBarHeight
+  },
+  homeScreen: {
     backgroundColor: Themes.colors.background,
     justifyContent: "center",
     alignItems: "center",
