@@ -74,10 +74,18 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        {/*<Stack.Screen name="ScreenOne" component={ScreenOne} />
-        <Stack.Screen name="ScreenTwo" component={ScreenTwo} />*/}
+      <Stack.Navigator 
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: Themes.colors.background,
+          },
+          headerTitleStyle: {
+            color: Themes.colors.white,
+          }
+        }}>
+        <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}} />
+        <Stack.Screen name="ScreenOne" component={ScreenOne} options = {{title: 'Song Details'}} />
+        <Stack.Screen name="ScreenTwo" component={ScreenTwo} options = {{title: 'Song Preview'} }/>
       </Stack.Navigator>
     </NavigationContainer>
   );

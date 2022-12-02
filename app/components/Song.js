@@ -19,7 +19,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
   export default function Item({ id, index, title, artist, album, duration, imageUrl, previewUrl, externalUrl, navigation }) {
     return (
-    <Pressable onPress={(e) => {navigation.navigate('ScreenOne', {url: externalUrl})}}>
+    <Pressable onPress={() => {navigation.navigate('ScreenOne', {url: externalUrl})}}>
       <View style={styles.item}>
           <View style={styles.index}>
             <Pressable onPress={(e) => {e.stopPropagation(); navigation.navigate('ScreenTwo', {url: previewUrl})}}>
